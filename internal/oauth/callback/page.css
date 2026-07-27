@@ -1,0 +1,187 @@
+:root {
+  /* Dark mode surface colors - charmtone dark palette. */
+  --bg: #201f26;
+  --bg-card: #2d2c35;
+  --bg-inset: #201f26;
+  --text: #fffaf1;
+  --text-muted: #858392;
+  --border: #4d4c57;
+  --brand-link: #8b75ff;
+
+  /* Charmtone accents (identical in both schemes). */
+  --julep: #00ffb2;
+  --coral: #ff577d;
+  --hazy: #8b75ff;
+  --squid: #858392;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f0f0f0;
+    --bg-card: #fbfbfb;
+    --bg-inset: #f4f4f6;
+    --text: #201f26;
+    --text-muted: #4d4c57;
+    --border: #dddce3;
+    --brand-link: #6b50ff;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 30rem;
+  text-align: center;
+}
+
+.card.ok {
+  --accent: var(--julep);
+}
+
+.card.failed {
+  --accent: var(--coral);
+}
+
+.mark {
+  width: 4.5rem;
+  margin: 0 auto 1.75rem;
+}
+
+.mark svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tint the heart to match the outcome so the state is legible before a
+   single word is read. */
+.card.failed .mark .heart {
+  fill: var(--coral);
+}
+
+h1 {
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+}
+
+.detail {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.detail .subject {
+  color: var(--hazy);
+}
+
+.reason {
+  margin-top: 1.5rem;
+  padding: 0.875rem 1rem;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: left;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.reason .code {
+  display: block;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.status {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  /* Hold the line's height so swapping the message never shifts the card. */
+  min-height: 1.6em;
+}
+
+.count {
+  color: var(--text);
+}
+
+/* An accent bar across the top of the card, tinted by outcome. On a
+   successful page it doubles as a countdown, draining over the closing
+   delay so the wait is visible as well as spelled out. It bleeds through
+   the card padding to sit flush in the top corners. */
+.rail {
+  margin: -2.5rem -2.5rem 2.5rem;
+  height: 3px;
+  /* Match the card's inner radius so the ends tuck into the corners. */
+  border-radius: 11px 11px 0 0;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.rail span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--accent);
+  transform-origin: left;
+}
+
+/* Only a running countdown drains. Otherwise the bar stays full, which is
+   also what a reader without JavaScript sees. */
+.rail.running span {
+  animation: drain var(--delay, 5s) linear forwards;
+}
+
+@keyframes drain {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail.running span {
+    animation: none;
+  }
+}
+
+.brand {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--squid);
+}
+
+.brand a {
+  color: var(--brand-link);
+  text-decoration: none;
+}
+
+.brand a:hover {
+  text-decoration: underline;
+}
